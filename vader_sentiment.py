@@ -12,9 +12,10 @@ import streamlit as st
 import time
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
-st.title(
+st.subheader(
     "Upload a file with a column called text to produce the overall sentiment of the provided text"
 )
+st.caption("Author : Parth Bhardwaj")
 uploaded_file = st.file_uploader("Choose a file")
 
 if uploaded_file is not None:
@@ -31,7 +32,7 @@ if uploaded_file is not None:
         div = (len(df) // 100) + 1
         for i in range(len(df)):
             df["sentiment"][i] = analyzer.polarity_scores(df["text"][i])
-            latest_iteration.text(f"Iteration {i+1}")
+            latest_iteration.text(f"{i+1} Sntences Analyzed")
             bar.progress(i // div + 1)
             time.sleep(0.1)
 
