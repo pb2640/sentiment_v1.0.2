@@ -37,5 +37,11 @@ if uploaded_file is not None:
             time.sleep(0.1)
 
         st.write(df)
-
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
         # make a new col called sentiment
