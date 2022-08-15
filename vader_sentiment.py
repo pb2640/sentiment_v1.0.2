@@ -32,7 +32,7 @@ if uploaded_file is not None:
         div = (len(df) // 100) + 1
         for i in range(len(df)):
             df["sentiment"][i] = analyzer.polarity_scores(df["text"][i])
-            latest_iteration.text(f"{i+1} Sntences Analyzed")
+            latest_iteration.text(f"{i+1} Sentences Analyzed")
             bar.progress(i // div + 1)
             time.sleep(0.1)
 
