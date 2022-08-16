@@ -25,18 +25,38 @@ if uploaded_file is not None:
     if "text" not in df.columns:
         st.write("text column missing in the uploaded file")
     else:
-        df["sentiment"] = ""
+        df["overall_score"] = ""
+        df["positive"] = ""
+        df["negative"] = ""
+        df["neutral"] = ""
         # Add a placeholder
         latest_iteration = st.empty()
         bar = st.progress(0)
         div = (len(df) // 100) + 1
         for i in range(len(df)):
-            df["sentiment"][i] = analyzer.polarity_scores(df["text"][i])
+            output = analyzer.polarity_scores(df["text"][i])
+            df["overall_score"][i] = output["compound"]
+            df["positive"][i] = output["pos"]
+            df["negative"][i] = output["neu"]
+            df["neutral"][i] = output["neg"]
             latest_iteration.text(f"{i+1} Sentences Analyzed")
             bar.progress(i // div + 1)
             time.sleep(0.1)
 
         st.write(df)
+@st.cache
+def convert_df(df):
+     # IMPORTANT: Cache the conversion to prevent computation on every rerun
+     return df.to_csv().encode('utf-8')
+
+csv = convert_df(df)
+
+st.download_button(
+     label="Download result as CSV",
+     data=csv,
+     file_name=str(time.time())+'result_df.csv',
+     mime='text/csv',
+ )
 hide_streamlit_style = """
             <style>
             #MainMenu {visibility: hidden;}
